@@ -66,6 +66,9 @@ load(const char *dictionary)
 		insertInTrie(word);
 	}
 
+	free(word);	
+	fclose(fp);
+
 	return true;
 }
 
@@ -88,8 +91,7 @@ size(void)
 bool
 unload(void)
 {
-	return deleteNode
-(rootNode);
+	return deleteNode(rootNode);
 }
 
 /*
@@ -146,7 +148,7 @@ bool deleteNode(trieNode *node) {
 	if (node == NULL) return true;
 	for (int i = 0; i < ALPHABETS; ++i)
 		if (node -> child[i] != NULL) deleteNode
-		(node -> child[i]);
+			(node -> child[i]);
 	free(node);
 	return true;
 }
