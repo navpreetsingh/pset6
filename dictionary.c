@@ -10,6 +10,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "dictionary.h"
 
@@ -18,12 +19,14 @@
 // Trie node
 typedef struct trieNode {
 	bool isLeaf;
-	struct trieNode *node[ALPHABETS];
+	struct trieNode *child[ALPHABETS];
 } trieNode;
 
 // Prototypes
 trieNode *getNode(void);
-void insertInTrie(char *word);
+void insertInTrie(char*);
+int getRelativePos(char);
+bool inTrie(char*);
 
 // Global variables
 trieNode *rootNode;
@@ -56,11 +59,12 @@ load(const char *dictionary)
 
 	rootNode = getNode();
 
-	while (getline(&word, &len, fp) != -1){
-
+	while (getline(&word, &len, fp) != -1) {
+		if (word[strlen(word) - 1] == '\n') word[strlen(word) - 1] = '\0'; // remove new line character
+		insertInTrie(word);
 	}
 
-	free(rootNode);
+	// free(rootNode);
 
 	return true;
 }
@@ -94,12 +98,44 @@ unload(void)
  */
 trieNode *getNode() {
 	trieNode *T = (trieNode *) malloc(sizeof(trieNode));
-	T -> isLeaf = true;
+	T -> isLeaf = false;
 	for (int i = 0; i < ALPHABETS; ++i)
-		T -> node[i] = NULL;
+		T -> child[i] = NULL;
 	return T;
 }
 
-void insertInTrie(char *word){
-	
+/*
+ * returns the pos relative to 'a'
+ */
+int getRelativePos(char ch) {
+	return ch % 'a';
+}
+
+void insertInTrie(char *word) {
+	trieNode *temp, *node = rootNode;
+	for (int i = 0; i < strlen(word); ++i)
+	{
+		int pos = getRelativePos(word[i]);
+		if (node -> child[pos] == NULL) {
+			temp = getNode();
+			node -> child[pos] = temp;
+			node = temp;
+		} else {
+			node = node -> child[pos];
+		}
+	}
+	node -> isLeaf = true;
+}
+
+bool inTrie(char *word) {
+	trieNode *node = rootNode;
+	for (int i = 0; i < strlen(word); ++i)
+	{
+		int pos = getRelativePos(word[i]);
+		if (node -> child[pos] == NULL)
+			return false;
+		node = node -> child[pos];
+	}
+	if (node -> isLeaf) return true;
+	else return false;
 }
