@@ -26,11 +26,13 @@ typedef struct trieNode {
 trieNode *getNode(void);
 void insertInTrie(char*);
 int getRelativePos(char);
-bool inTrie(char*);
+bool inTrie(const char*);
+bool deleteNode(trieNode*);
 
 // Global variables
 trieNode *rootNode;
 size_t dictionarySize = 0;
+int mc = 0;
 
 /*
  * Returns true if word is in dictionary else false.
@@ -39,8 +41,7 @@ size_t dictionarySize = 0;
 bool
 check(const char *word)
 {
-	// TODO
-	return false;
+	return inTrie(word);
 }
 
 
@@ -65,8 +66,6 @@ load(const char *dictionary)
 		insertInTrie(word);
 	}
 
-	// free(rootNode);
-
 	return true;
 }
 
@@ -89,14 +88,15 @@ size(void)
 bool
 unload(void)
 {
-	// TODO
-	return false;
+	return deleteNode
+(rootNode);
 }
 
 /*
  * Get new node
  */
 trieNode *getNode() {
+	printf("malloc count: %d\n", ++mc);
 	trieNode *T = (trieNode *) malloc(sizeof(trieNode));
 	T -> isLeaf = false;
 	for (int i = 0; i < ALPHABETS; ++i)
@@ -126,9 +126,10 @@ void insertInTrie(char *word) {
 	}
 	node -> isLeaf = true;
 	++dictionarySize;
+	printf("inserted %s\n", word);
 }
 
-bool inTrie(char *word) {
+bool inTrie(const char *word) {
 	trieNode *node = rootNode;
 	for (int i = 0; i < strlen(word); ++i)
 	{
@@ -139,4 +140,13 @@ bool inTrie(char *word) {
 	}
 	if (node -> isLeaf) return true;
 	else return false;
+}
+
+bool deleteNode(trieNode *node) {
+	if (node == NULL) return true;
+	for (int i = 0; i < ALPHABETS; ++i)
+		if (node -> child[i] != NULL) deleteNode
+		(node -> child[i]);
+	free(node);
+	return true;
 }
