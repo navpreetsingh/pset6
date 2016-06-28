@@ -7,6 +7,4 @@ To run:
 
 `git clone https://github.com/NischalBhatewara/pset6.git`
 
-`./sudoku n00b 5`
-
-Enjoy!
+`./speller testDict.txt text.txt`
