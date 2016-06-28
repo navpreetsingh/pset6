@@ -30,6 +30,7 @@ bool inTrie(char*);
 
 // Global variables
 trieNode *rootNode;
+size_t dictionarySize = 0;
 
 /*
  * Returns true if word is in dictionary else false.
@@ -77,8 +78,7 @@ load(const char *dictionary)
 unsigned int
 size(void)
 {
-	// TODO
-	return 0;
+	return dictionarySize;
 }
 
 
@@ -125,6 +125,7 @@ void insertInTrie(char *word) {
 		}
 	}
 	node -> isLeaf = true;
+	++dictionarySize;
 }
 
 bool inTrie(char *word) {
