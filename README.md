@@ -7,4 +7,4 @@ To run:
 
 `git clone https://github.com/NischalBhatewara/pset6.git`
 
-`./speller testDict.txt text.txt`
+`./speller large.txt text.txt`
