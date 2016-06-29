@@ -16,7 +16,7 @@
 
 
 // default dictionary
-#define DICTIONARY "./large"
+#define DICTIONARY "./large.txt"
 
 // prototype
 double calculate(const struct rusage *b, const struct rusage *a);

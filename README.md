@@ -5,6 +5,8 @@ To run:
 
 `cd ~/localdir/pset6`
 
-`git clone https://github.com/NischalBhatewara/pset6.git`
+`git clone https://github.com/navpreetsingh/pset6.git`
 
-`./speller large.txt text.txt`
+`make`
+
+`./speller text.txt`
